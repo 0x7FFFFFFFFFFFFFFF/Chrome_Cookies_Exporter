@@ -1,0 +1,68 @@
+﻿<Window x:Class="cookies_exporter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900" Width="1600" xmlns:local="clr-namespace:cookies_exporter">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBox x:Name="cookie_path_textbox" Margin="5 5 0 0" FontSize="16" Padding="3"
+                 HorizontalAlignment="Stretch" TextChanged="generate_cookies_txt" ToolTip="By default, it's at C:\Users\username\AppData\Local\Google\Chrome\User Data\Default\Cookies" />
+        <Button local:ContextMenuLeftClickBehavior.IsLeftClickEnabled="True" Grid.Row="0" Grid.Column="1" Margin="5 5 0 0" Padding="3">
+            <Button.Content>Detect</Button.Content>
+            <Button.ContextMenu>
+                <ContextMenu x:Name="detected_items">
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+        <Button Grid.Row="0" Grid.Column="2" Margin="5 5 5 0" Padding="3" Click="choose_cookie_path">Choose...</Button>
+
+        <TextBox Grid.Row="1" Grid.Column="0" x:Name="host_key" Margin="5 5 0 0" FontSize="16" Padding="3"
+                 HorizontalAlignment="Stretch" TextChanged="generate_cookies_txt" />
+        <RadioButton Grid.Row="1" Grid.Column="1" x:Name="use_regex" VerticalAlignment="Center" Margin="5 5 0 0"
+                     IsChecked="True" Checked="generate_cookies_txt">
+            Regex
+        </RadioButton>
+        <RadioButton Grid.Row="1" Grid.Column="2" x:Name="use_string" VerticalAlignment="Center" Margin="5 5 5 0"
+                     Checked="generate_cookies_txt">
+            String
+        </RadioButton>
+
+        <TextBox x:Name="output" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" AcceptsTab="True"
+                 AcceptsReturn="True" FontSize="16"
+                 Padding="3" Margin="5 5 5 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" />
+        <Button Grid.Row="3" Grid.Column="1" Margin="5 5 0 5" Padding="3" Click="copy">Copy</Button>
+        <Button Grid.Row="3" Grid.Column="2" Margin="5 5 5 5" Padding="3" Click="save_to">Save To...</Button>
+        <StackPanel Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Orientation="Horizontal">
+            <CheckBox x:Name="always_true_2nd_column" FontSize="16" VerticalAlignment="Center"
+                      VerticalContentAlignment="Center" ToolTipService.ShowDuration="10000"
+                      Checked="generate_cookies_txt" Unchecked="generate_cookies_txt">
+                <CheckBox.Content>Always use True for 2nd column</CheckBox.Content>
+                <CheckBox.ToolTip>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontWeight="Bold" Padding="3" Margin="0 5 5 0">What's this?</TextBlock>
+                        <Border BorderBrush="Silver" BorderThickness="0 1 0 0" Margin="0 8" />
+                        <TextBlock TextWrapping="Wrap" MaxWidth="600">The 2nd column of the output is a TRUE/FALSE value indicating if all machines within a given domain can access the cookies. This value is set automatically by the browser, depending on the value you set for domain. I dont' know how to determine its values by the data directly read from Chrome's cookie database. I saw some Chrome extension use the first character of the domain to determine this value, which is what I used by default in this application. However, some other tools always send TRUE, and this checkbox enables that.</TextBlock>
+                    </StackPanel>
+                </CheckBox.ToolTip>
+            </CheckBox>
+
+            <CheckBox x:Name="output_wrap" FontSize="16" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                      ToolTipService.ShowDuration="10000" Margin="15 0 0 0" Checked="Output_wrap_OnChecked"
+                      Unchecked="Output_wrap_OnUnchecked" ToolTip="This doesn't affect the saved cookies.txt file.">
+                Enable output wrapping
+            </CheckBox>
+        </StackPanel>
+    </Grid>
+</Window>
